@@ -6,17 +6,17 @@ A TUI file browser extension for [pi](https://github.com/earendil-works/pi). Nav
 
 ## Install
 
-```
-pi install npm:@almegal/pi-file-browser
+```sh
+pi install git:github.com/chikagonight/pi-file-browser@master
 ```
 
-Or from this repo:
+After install, run `/reload` in pi. No build step needed — pi loads the TypeScript source directly.
+
+To update to the latest commit:
 
 ```sh
-pi install git:github.com/almegal/pi-file-browser
+pi update git:github.com/chikagonight/pi-file-browser@master
 ```
-
-After install, run `/reload` in pi.
 
 ## Features
 
