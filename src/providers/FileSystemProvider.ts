@@ -82,4 +82,20 @@ export class FileSystemProvider implements IFileSystemProvider {
   async writeFile(filePath: string, content: string): Promise<void> {
     await fs.writeFile(filePath, content, 'utf-8');
   }
+
+  async createFile(filePath: string): Promise<void> {
+    await fs.writeFile(filePath, '', { flag: 'wx' });
+  }
+
+  async createDirectory(dirPath: string): Promise<void> {
+    await fs.mkdir(dirPath);
+  }
+
+  async deleteFile(filePath: string): Promise<void> {
+    await fs.unlink(filePath);
+  }
+
+  async deleteDirectory(dirPath: string): Promise<void> {
+    await fs.rm(dirPath, { recursive: true });
+  }
 }

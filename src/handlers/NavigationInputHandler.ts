@@ -12,6 +12,9 @@ export class NavigationInputHandler implements IInputHandler {
 
   constructor() {
     this.bindings = [
+      { match: (d) => matchesKey(d, Key.ctrl('n')), result: Action.NewFile },
+      { match: (d) => matchesKey(d, Key.ctrl('d')), result: Action.NewDirectory },
+      { match: (d) => matchesKey(d, Key.delete), result: Action.Delete },
       { match: (d) => matchesKey(d, Key.up), result: Direction.Up },
       { match: (d) => matchesKey(d, Key.down), result: Direction.Down },
       { match: (d) => matchesKey(d, Key.left), result: Direction.Left },

@@ -104,6 +104,21 @@ export class FileBrowserComponent implements Component {
       // In browsing mode, backspace navigates up (same as left/h)
       this.panel.goUp().then(() => { this.version++; this.tui.requestRender(); });
       return;
+    } else if (input === Action.NewFile) {
+      this.done({ action: 'create_file', directory: this.panel.currentPath });
+      return;
+    } else if (input === Action.NewDirectory) {
+      this.done({ action: 'create_directory', directory: this.panel.currentPath });
+      return;
+    } else if (input === Action.Delete) {
+      const selected = this.panel.getSelectedEntry();
+      if (selected && selected.name !== '..') {
+        this.done({
+          action: 'delete_entry', entryPath: selected.path, entryName: selected.name,
+          isDirectory: selected.isDirectory, directory: this.panel.currentPath,
+        });
+      }
+      return;
     }
 
     this.version++;
@@ -291,7 +306,9 @@ export class FileBrowserComponent implements Component {
       lines.push(this.theme.fg('accent', status) + ' '.repeat(Math.max(0, w - visibleWidth(status))));
 
       const hiddenLabel = this.panel.showHidden ? 'A' : '.';
-      const hints = truncateToWidth('\u21B5=open  \u2192=browse  \u2191\u2193\u2190  /=search  ' + hiddenLabel + '=hidden  Esc', w);
+      const fullHints = '\u21B5=open  \u2192=browse  \u2191\u2193\u2190  /=search  ' + hiddenLabel + '=hidden  Esc  ^N=new ^D=mkdir Del=rm';
+      const compactHints = '^N=new ^D=mkdir Del=rm  \u21B5=open  /=search';
+      const hints = truncateToWidth(visibleWidth(fullHints) <= w ? fullHints : compactHints, w);
       lines.push(this.theme.fg('dim', hints) + ' '.repeat(Math.max(0, w - visibleWidth(hints))));
     }
     return lines;

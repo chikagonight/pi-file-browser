@@ -14,4 +14,8 @@ export interface IFileSystemProvider {
   getHomeDirectory(): string;
   readFile(filePath: string): Promise<string>;
   writeFile(filePath: string, content: string): Promise<void>;
+  createFile(filePath: string): Promise<void>;
+  createDirectory(dirPath: string): Promise<void>;
+  deleteFile(filePath: string): Promise<void>;
+  deleteDirectory(dirPath: string): Promise<void>;
 }

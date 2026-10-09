@@ -31,6 +31,9 @@ Navigate the filesystem from within pi with vim-style keys.
 | `→` / `l` | Enter selected directory |
 | `Enter` on directory | Select directory for workspace switch |
 | `Enter` on file | Open file in pi editor |
+| `Ctrl+N` | New file |
+| `Ctrl+D` | New directory |
+| `Delete` | Delete selected entry with confirmation (directories recursively) |
 | `Esc` / `q` | Close browser |
 
 ### 🔍 Type-to-filter search

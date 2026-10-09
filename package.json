@@ -11,7 +11,7 @@
   "keywords": ["pi-package"],
   "scripts": {
     "build": "tsc",
-    "test": "npm run build",
+    "test": "tsc && node --test dist/**/*.test.js",
     "prepublishOnly": "npm run build"
   },
   "pi": {

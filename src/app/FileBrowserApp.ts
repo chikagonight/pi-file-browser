@@ -64,6 +64,51 @@ export class FileBrowserApp {
           } else if (result.action === 'resume_session') {
             await this.resumeSession(result.sessionPath, result.directory, ctx);
             return;
+          } else if (result.action === 'create_file') {
+            const name = await ctx.ui.input('New file name', '');
+            if (name?.trim()) {
+              try {
+                const filePath = this.fsProvider.joinPath(result.directory, name.trim());
+                await this.fsProvider.createFile(filePath);
+                ctx.ui.notify('Created: ' + name.trim(), 'info');
+              } catch (err) {
+                ctx.ui.notify('Failed to create file: ' + String(err), 'error');
+              }
+            }
+            currentPath = result.directory;
+            continue;
+          } else if (result.action === 'create_directory') {
+            const name = await ctx.ui.input('New directory name', '');
+            if (name?.trim()) {
+              try {
+                const dirPath = this.fsProvider.joinPath(result.directory, name.trim());
+                await this.fsProvider.createDirectory(dirPath);
+                ctx.ui.notify('Created: ' + name.trim(), 'info');
+              } catch (err) {
+                ctx.ui.notify('Failed to create directory: ' + String(err), 'error');
+              }
+            }
+            currentPath = result.directory;
+            continue;
+          } else if (result.action === 'delete_entry') {
+            const confirmed = await ctx.ui.confirm(
+              'Delete ' + (result.isDirectory ? 'directory' : 'file'),
+              'Delete "' + result.entryName + '"? This cannot be undone.',
+            );
+            if (confirmed) {
+              try {
+                if (result.isDirectory) {
+                  await this.fsProvider.deleteDirectory(result.entryPath);
+                } else {
+                  await this.fsProvider.deleteFile(result.entryPath);
+                }
+                ctx.ui.notify('Deleted: ' + result.entryName, 'info');
+              } catch (err) {
+                ctx.ui.notify('Failed to delete entry: ' + String(err), 'error');
+              }
+            }
+            currentPath = result.directory;
+            continue;
           } else {
             return;
           }

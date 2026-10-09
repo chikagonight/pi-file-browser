@@ -20,6 +20,9 @@ export enum Action {
   Search = 'SEARCH',
   Backspace = 'BACKSPACE',
   ToggleHidden = 'TOGGLE_HIDDEN',
+  NewFile = 'NEW_FILE',
+  NewDirectory = 'NEW_DIRECTORY',
+  Delete = 'DELETE',
 }
 
 export interface NavigationResult {
@@ -32,7 +35,10 @@ export type BrowserResult =
   | { action: 'cancel' }
   | { action: 'new_session'; directory: string }
   | { action: 'resume_session'; directory: string; sessionPath: string }
-  | { action: 'edit_file'; filePath: string };
+  | { action: 'edit_file'; filePath: string }
+  | { action: 'create_file'; directory: string }
+  | { action: 'create_directory'; directory: string }
+  | { action: 'delete_entry'; entryPath: string; entryName: string; isDirectory: boolean; directory: string };
 
 export interface DirectoryConfigInfo {
   readonly directory: string;
