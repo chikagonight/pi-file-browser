@@ -18,6 +18,26 @@ afterEach(async () => {
   await fs.rm(tempDir, { recursive: true, force: true });
 });
 
+test('listDirectory groups directory symlinks with directories and skips dangling symlinks', async () => {
+  await fs.mkdir(path.join(tempDir, 'z-dir'));
+  await fs.writeFile(path.join(tempDir, 'b-file.txt'), 'content');
+  await fs.symlink('z-dir', path.join(tempDir, 'a-dir-link'));
+  await fs.symlink('b-file.txt', path.join(tempDir, 'c-file-link'));
+  await fs.symlink('missing', path.join(tempDir, 'dangling-link'));
+
+  const entries = await provider.listDirectory(tempDir);
+  assert.deepEqual(
+    entries.map(({ name, isDirectory }) => ({ name, isDirectory })),
+    [
+      { name: '..', isDirectory: true },
+      { name: 'a-dir-link', isDirectory: true },
+      { name: 'z-dir', isDirectory: true },
+      { name: 'b-file.txt', isDirectory: false },
+      { name: 'c-file-link', isDirectory: false },
+    ],
+  );
+});
+
 test('createFile creates an empty file', async () => {
   const filePath = path.join(tempDir, 'new.txt');
   await provider.createFile(filePath);

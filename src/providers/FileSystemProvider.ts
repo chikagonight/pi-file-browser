@@ -21,7 +21,7 @@ export class FileSystemProvider implements IFileSystemProvider {
         const fileEntry: FileEntry = {
           name: entry.name,
           path: fullPath,
-          isDirectory: entry.isDirectory(),
+          isDirectory: stat.isDirectory(),
           size: stat.size,
           modified: stat.mtime,
         };
